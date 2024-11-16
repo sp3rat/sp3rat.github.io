@@ -3,29 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Countdown to New Year's Eve</title>
+    <title>Countdown Timer</title>
     <style>
-        body { text-align: center; font-family: Arial, sans-serif; margin-top: 50px; }
-        #countdown { font-size: 24px; color: green; }
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+            color: #333;
+            padding: 20px;
+        }
+        #countdown {
+            font-size: 2rem;
+            margin-top: 20px;
+        }
     </style>
+</head>
+<body>
+    <h1>Countdown Timer</h1>
+    <p>Time remaining until <span id="target-date">August 6, 2025</span>:</p>
+    <div id="countdown"></div>
+
     <script>
+        // Ustaw docelową datę
+        const targetDate = new Date("August 6, 2025 23:59:59").getTime();
+        document.getElementById("target-date").textContent = "August 6, 2025";
+
+        // Funkcja aktualizująca odliczanie
         function updateCountdown() {
-            const eventDate = new Date('December 31, ' + new Date().getFullYear() + ' 23:59:59').getTime();
             const now = new Date().getTime();
-            const timeLeft = eventDate - now;
+            const timeLeft = targetDate - now;
+
+            if (timeLeft < 0) {
+                document.getElementById("countdown").textContent = "The countdown has ended!";
+                clearInterval(timerInterval);
+                return;
+            }
 
             const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
             const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
 
-            document.getElementById("countdown").innerText = `${days} days, ${hours}h ${minutes}m ${seconds}s`;
+            document.getElementById("countdown").textContent = 
+                `${days} days, ${hours} hours, ${minutes} minutes, ${seconds} seconds`;
         }
-        setInterval(updateCountdown, 1000);
+
+        // Aktualizuj odliczanie co sekundę
+        const timerInterval = setInterval(updateCountdown, 1000);
+
+        // Uruchom funkcję od razu
+        updateCountdown();
     </script>
-</head>
-<body>
-    <h1>Countdown to New Year's Eve</h1>
-    <div id="countdown">Loading...</div>
 </body>
 </html>
